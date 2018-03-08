@@ -122,5 +122,38 @@ Well the last two midleware are enought to continue working on the serivces for 
 Before it was mention the user controller for the user route now will work on how should it looks this controler 
 *Note*: for this example ther are not DB so it's using and plain object for the concurrency
 
-This controller should handel the request and search or create on the DB the information for an specific user or if ther is not and id available migth reutrn all users
+This controller should handle the request and search or create a record on the DB with the information for an specific user or if ther is not and id available migth reutrn all users
+
+```
+//use/controller.js
+ const db = require('../db');
+
+exports.findOne = async (req, res) => {
+    const user = await db.find(req.params.id);
+    res.json(user);
+} 
+
+exports.create = async (req, res) => {
+    const user = await db.create(req.body);
+    res.status(201).json(user);
+}
+
+exports.update = async (req, res) => {
+    const user = await db.create(req.params.id, req.body);
+    res.status(201).json(user);
+}
+
+exports.update = async (req, res) => {
+    const user = await db.delete(req.params.id);
+    res.status(201).json(user);
+}
+
+```
+This example it's using a feuatre from es7 #async/await that allow it to work the async task it  sync way
+and this its a basic way of how our controller should work.
+
+##Custom Middlewares
+The project alredy use middlewares provide for the epxress projects i.e body-parser and cors but at this time there need to create custome middlewares.
+
+Firts midleware its to handle the validation suppose ther should validate the payload sent to the POST user method it should validate each value its the correct if not sendn back an error with a meessage pointing the errors foudn a way to do it's using the express-validation middleware and define the validation rules  like below
 

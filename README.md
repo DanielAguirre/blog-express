@@ -152,6 +152,62 @@ exports.update = async (req, res) => {
 This example it's using a feuatre from es7 #async/await that allow it to work the async task it  sync way
 and this its a basic way of how our controller should work.
 
+
+##DB
+For this example it will be using mongodb but you can use the one your preference
+
+firs there should create the schema
+```
+//db/userSchema
+
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  lastnam: { type: String, required: true },
+  userName: { type: String, required: true },
+  mail: { type: String, required: true },
+  age: { type: Number, default: 0 },
+  
+});
+
+module.exports = mongoose.model('User', bookSchema);
+
+```
+Its' define the values , types and whether required or not its prty simple but its work for the example
+and at the final line its load the model in  mongose this its helpful becuase mongoose use the singleton aproach for the models thats means once you required this models it'll be accesible from diferent parts of your application.
+
+Now its time to create the user model
+
+```
+const mongoose = require('mongoose');
+
+const bookModel = mongoose.model('User');
+
+const User = {
+  findOne: id => userModel.findOne({ _id: id }).exec(),
+
+  find: query => userModel.find(query).exec(),
+
+  save(data) {
+    return userModel.create(data, function(err, data)  {
+      console.log(err, data);
+    });
+  },
+
+  update(id, modifications) {
+    return userModel.findByIdAndUpdate(id, { $set: modifications }, { new: true }).exec();
+  },
+};
+
+module.exports = User;
+
+```
+
+## Unit Test
+How o test our application
+
+
 ##Custom Middlewares
 The project alredy use middlewares provide for the epxress projects i.e body-parser and cors but at this time there need to create custome middlewares.
 
